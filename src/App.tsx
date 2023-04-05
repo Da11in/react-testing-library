@@ -1,26 +1,30 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { useEffect } from "react";
+import { useAuth } from "./hooks/useAuth";
+import { Outlet, useNavigate } from "react-router-dom";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+// TODO:
+// сделать форму логина
+// добавить валидацию по клику на сабмит
+// по нажатию на сабмит загружать пользователя
+// редирект на домашнюю страницу
+// добавить редакс и пользователя в него
+
+const App = () => {
+  const navigate = useNavigate();
+
+  const { user, loading } = useAuth();
+
+  useEffect(() => {
+    console.log("App use effect");
+    if (user === null && !loading) {
+      navigate("/login");
+    }
+  }, [user, loading, navigate]);
+
+  if (loading) {
+  }
+
+  return <Outlet />;
+};
 
 export default App;
