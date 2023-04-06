@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@chakra-ui/icons": "^2.0.18",
     "@chakra-ui/react": "^2.5.5",
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
@@ -51,7 +52,8 @@
     ]
   },
   "devDependencies": {
-    "@types/react-redux": "^7.1.25"
+    "@types/react-redux": "^7.1.25",
+    "msw": "^1.2.1"
   },
   "jest": {
     "moduleNameMapper": {

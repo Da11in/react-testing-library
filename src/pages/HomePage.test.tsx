@@ -1,21 +1,56 @@
-import { cleanup, render, screen } from "@testing-library/react";
+import { DefaultBodyType, rest } from "msw";
+import { setupServer } from "msw/node";
+import type { Todo } from "../types/Todo";
+import { screen, render, waitForElementToBeRemoved } from "@testing-library/react";
 import HomePage from "./HomePage";
 
-afterEach(cleanup);
+const mockTodos: Todo[] = [
+  {
+    userId: 1,
+    id: 1,
+    title: "delectus aut autem",
+    completed: false,
+  },
+  {
+    userId: 1,
+    id: 2,
+    title: "quis ut nam facilis et officia qui",
+    completed: false,
+  },
+  {
+    userId: 1,
+    id: 3,
+    title: "fugiat veniam minus",
+    completed: false,
+  },
+];
 
-describe("Home page", () => {
-  it("Initial render with loading", () => {
+const server = setupServer(
+  rest.get<DefaultBodyType, {}, Todo[]>(
+    "https://jsonplaceholder.typicode.com/todos",
+    (req, res, ctx) => {
+      return res(ctx.json(mockTodos));
+    }
+  )
+);
+
+beforeAll(() => server.listen());
+afterAll(() => server.close());
+
+describe("Homepage", () => {
+  it("Homepage initial render::loading", () => {
     render(<HomePage />);
     expect(screen.getByText(/loading/i)).toBeInTheDocument();
   });
 
-  // it("Loaded list of todos", async () => {
-  //   render(<HomePage />);
+  it("Homepage render::table", async () => {
+    render(<HomePage />);
 
-  //   const todoTable = await screen.findByRole("table");
-  //   const todoTableItems = await screen.findAllByTestId(/todo-table-item/i);
+    expect(screen.getByText(/loading/i)).toBeInTheDocument();
 
-  //   expect(todoTable).toBeInTheDocument();
-  //   expect(todoTableItems.length).toBeGreaterThan(0);
-  // });
+    await waitForElementToBeRemoved(() => screen.queryByText(/loading/i));
+
+    expect(screen.getByRole("table")).toBeInTheDocument();
+    expect(screen.getAllByTestId(/todo-table-item/i).length).toBe(mockTodos.length);
+  });
 });
