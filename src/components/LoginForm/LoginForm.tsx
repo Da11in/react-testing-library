@@ -11,6 +11,8 @@ import {
 } from "@chakra-ui/react";
 import { useFormik } from "formik";
 import * as yup from "yup";
+import { useNavigate } from "react-router-dom";
+import { useAuthContext } from "../../contexts/AuthContext";
 
 type LoginFormValues = {
   email: string;
@@ -19,6 +21,8 @@ type LoginFormValues = {
 
 const LoginForm: React.FC = (): React.ReactElement => {
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  const { login } = useAuthContext();
 
   const formik = useFormik<LoginFormValues>({
     initialValues: { email: "", password: "" },
@@ -30,7 +34,8 @@ const LoginForm: React.FC = (): React.ReactElement => {
       setLoading(true);
 
       try {
-        // dispatch set user
+        await login(values.email, values.password);
+        navigate("/", { replace: true });
       } catch (err) {
         if (typeof err === "string") {
           helpers.setFieldError("email", err);
@@ -73,7 +78,9 @@ const LoginForm: React.FC = (): React.ReactElement => {
             value={formik.values.email}
             onChange={formik.handleChange}
           />
-          {emailError && <FormErrorMessage>{formik.errors.email}</FormErrorMessage>}
+          {emailError && (
+            <FormErrorMessage data-testid="email-error">{formik.errors.email}</FormErrorMessage>
+          )}
         </FormControl>
 
         <FormControl isInvalid={passwordError}>
@@ -86,7 +93,11 @@ const LoginForm: React.FC = (): React.ReactElement => {
             value={formik.values.password}
             onChange={formik.handleChange}
           />
-          {passwordError && <FormErrorMessage>{formik.errors.password}</FormErrorMessage>}
+          {passwordError && (
+            <FormErrorMessage data-testid="password-error">
+              {formik.errors.password}
+            </FormErrorMessage>
+          )}
         </FormControl>
 
         <Button

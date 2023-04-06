@@ -1,30 +1,23 @@
-import { useEffect } from "react";
+import { useMemo } from "react";
 import { useAuth } from "./hooks/useAuth";
-import { Outlet, useNavigate } from "react-router-dom";
-
-// TODO:
-// сделать форму логина
-// добавить валидацию по клику на сабмит
-// по нажатию на сабмит загружать пользователя
-// редирект на домашнюю страницу
-// добавить редакс и пользователя в него
+import { AuthContext } from "./contexts/AuthContext";
+import AppRoutes from "./components/AppRoutes/AppRoutes";
+import AppLoading from "./components/AppLoading/AppLoading";
 
 const App = () => {
-  const navigate = useNavigate();
+  const { user, loading, login, logout } = useAuth();
 
-  const { user, loading } = useAuth();
-
-  useEffect(() => {
-    console.log("App use effect");
-    if (user === null && !loading) {
-      navigate("/login");
-    }
-  }, [user, loading, navigate]);
+  const authContextValue = useMemo(() => ({ user, login, logout }), [user, login, logout]);
 
   if (loading) {
+    return <AppLoading />;
   }
 
-  return <Outlet />;
+  return (
+    <AuthContext.Provider value={authContextValue}>
+      <AppRoutes />
+    </AuthContext.Provider>
+  );
 };
 
 export default App;
