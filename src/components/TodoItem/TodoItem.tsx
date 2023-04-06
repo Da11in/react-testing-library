@@ -18,6 +18,7 @@ const TodoItem: React.FC<TodoItemProps> = (props): React.ReactElement => {
     <ListItem margin={3}>
       <HStack spacing={5}>
         <IconButton
+          data-testid="complete-button"
           aria-label="mark item as completed"
           icon={<CheckIcon color={completed ? "green.500" : "gray.500"} />}
           onClick={() => onComplete({ id, completed: !completed })}
@@ -31,7 +32,12 @@ const TodoItem: React.FC<TodoItemProps> = (props): React.ReactElement => {
           {title}
         </Text>
 
-        <IconButton aria-label="delete item" icon={<DeleteIcon />} onClick={() => onDelete(id)} />
+        <IconButton
+          aria-label="delete item"
+          data-testid="delete-button"
+          icon={<DeleteIcon />}
+          onClick={() => onDelete(id)}
+        />
       </HStack>
     </ListItem>
   );
