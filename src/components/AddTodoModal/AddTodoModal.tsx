@@ -54,7 +54,13 @@ const AddTodoModal = () => {
   return (
     <>
       <Flex justifyContent="flex-end" mt={10}>
-        <Button colorScheme="teal" size="md" onClick={onOpen}>
+        <Button
+          colorScheme="teal"
+          size="md"
+          onClick={onOpen}
+          isDisabled={loading}
+          data-testid="open-modal-button"
+        >
           Add new
         </Button>
       </Flex>
@@ -80,7 +86,7 @@ const AddTodoModal = () => {
           </ModalBody>
 
           <ModalFooter>
-            <Button colorScheme="teal" mr={3} onClick={onAdd} isDisabled={loading}>
+            <Button colorScheme="teal" mr={3} onClick={onAdd} data-testid="add-new-button">
               Add new task
             </Button>
           </ModalFooter>

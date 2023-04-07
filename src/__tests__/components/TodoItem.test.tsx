@@ -22,14 +22,14 @@ describe("Todo item", () => {
     expect(screen.getByText("Title")).toBeInTheDocument();
   });
 
-  it("Click on item buttons", () => {
+  it("Click on complete button", () => {
     render(
       <List>
         <TodoItem {...providedProps} />
       </List>
     );
 
-    userEvent.click(screen.getByTestId("complete-button"));
+    userEvent.click(screen.getByTestId(/complete-button/i));
 
     expect(providedProps.onComplete).toBeCalledTimes(1);
     expect(providedProps.onComplete).toBeCalledWith({
@@ -46,7 +46,7 @@ describe("Todo item", () => {
       </List>
     );
 
-    userEvent.click(screen.getByTestId("delete-button"));
+    userEvent.click(screen.getByTestId(/delete-button/i));
 
     expect(providedProps.onComplete).toBeCalledTimes(0);
     expect(providedProps.onDelete).toBeCalledTimes(1);
