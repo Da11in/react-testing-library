@@ -1,8 +1,20 @@
+import { useEffect } from "react";
 import { Box, Container } from "@chakra-ui/react";
 import TodoList from "../components/TodoList/TodoList";
 import AddTodoModal from "../components/AddTodoModal/AddTodoModal";
 
+import { getAllTodos } from "../store/actions";
+import { useAppDispatch } from "../store/hooks";
+
+const USER_ID = 1;
+
 const HomePage = () => {
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(getAllTodos(USER_ID));
+  }, [dispatch]);
+
   return (
     <Box
       display="flex"

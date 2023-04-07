@@ -1,24 +1,18 @@
-import { useCallback, useEffect } from "react";
+import { useCallback } from "react";
 
 import { Box, Center, Heading, Spinner } from "@chakra-ui/react";
 import { List } from "@chakra-ui/react";
 
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { getTodoState } from "../../store/todoReducer";
-import { patchTodo, deleteTodo, getAllTodos } from "../../store/actions";
+import { patchTodo, deleteTodo } from "../../store/actions";
 
 import type { PatchTodoDTO } from "../../types/PatchTodoDTO";
 import TodoItem from "../TodoItem/TodoItem";
 
-const USER_ID = 1;
-
 const TodoList = () => {
   const dispatch = useAppDispatch();
   const { loading, list, error } = useAppSelector(getTodoState);
-
-  useEffect(() => {
-    dispatch(getAllTodos(USER_ID));
-  }, [dispatch]);
 
   const handleCompleteTodo = useCallback(
     (arg: PatchTodoDTO) => {
@@ -73,6 +67,7 @@ const TodoList = () => {
                 right={0}
                 bottom={0}
                 background="rgba(255,255,255, 0.2)"
+                data-testid="todo-list-loader"
               >
                 <Spinner size="lg" />
               </Center>
